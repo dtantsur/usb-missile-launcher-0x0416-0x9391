@@ -1,7 +1,7 @@
 ifneq ($(KERNELRELEASE),)
 obj-m := missile_launcher.o
 else
-KDIR := /usr/src/linux-headers-3.0.0-12-generic/
+KDIR := /usr/src/kernels/`uname -r`
 all:
 	$(MAKE) -C $(KDIR) M=`pwd` modules
 endif
