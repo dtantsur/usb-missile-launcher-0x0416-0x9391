@@ -1,8 +1,13 @@
 #!/bin/bash
 
-PATH="/sys/bus/usb/drivers/missilelauncher/*"
+DIR=$(ls -1d /sys/bus/usb/drivers/missilelauncher/*-*:*.* | head -n1)
 
-cd $PATH
+if [ -z "$DIR" ]; then
+    echo "Device not found, is the driver loaded?"
+    exit 1
+fi
+
+cd $DIR
 
 echo "Missile Control - press [w], [a], [s], [d] to move, [e] to stop and [q] to shoot. [ctrl+c to exit]"
 
