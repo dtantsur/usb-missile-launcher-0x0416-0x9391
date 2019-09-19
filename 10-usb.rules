@@ -1,0 +1,2 @@
+# usb rocket launcher VENDOR_ID 0x0416 PRODUCT_ID 0x9391
+ACTION=="add", SUBSYSTEM=="usb", MODALIAS=="v0416p9391", RUN+="/sbin/insmod /your/path/to/missile_launcher.ko"
