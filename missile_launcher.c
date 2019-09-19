@@ -469,13 +469,15 @@ static ssize_t store_stop(struct device *dev, struct device_attribute *attr,
   return count;
 }
 
+#define SYSFS_FILE_PERMISSIONS 0644
+
 /* Helper macros for creating the device attributes */
-static DEVICE_ATTR(left, 0666, show_left, store_left);
-static DEVICE_ATTR(right, 0666, show_right, store_right);
-static DEVICE_ATTR(up, 0666, show_up, store_up);
-static DEVICE_ATTR(down, 0666, show_down, store_down);
-static DEVICE_ATTR(fire, 0666, show_fire, store_fire);
-static DEVICE_ATTR(stop, 0666, show_stop, store_stop);
+static DEVICE_ATTR(left, SYSFS_FILE_PERMISSIONS, show_left, store_left);
+static DEVICE_ATTR(right, SYSFS_FILE_PERMISSIONS, show_right, store_right);
+static DEVICE_ATTR(up, SYSFS_FILE_PERMISSIONS, show_up, store_up);
+static DEVICE_ATTR(down, SYSFS_FILE_PERMISSIONS, show_down, store_down);
+static DEVICE_ATTR(fire, SYSFS_FILE_PERMISSIONS, show_fire, store_fire);
+static DEVICE_ATTR(stop, SYSFS_FILE_PERMISSIONS, show_stop, store_stop);
 
 /**
  * @brief Function called when the USB core has found the USB device.
@@ -504,22 +506,22 @@ static int launcher_probe(struct usb_interface *interface,
   usb_set_intfdata(interface, dev);
 
   if ((ret = device_create_file(&interface->dev, &dev_attr_left)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
   if ((ret = device_create_file(&interface->dev, &dev_attr_right)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
   if ((ret = device_create_file(&interface->dev, &dev_attr_up)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
   if ((ret = device_create_file(&interface->dev, &dev_attr_down)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
   if ((ret = device_create_file(&interface->dev, &dev_attr_fire)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
   if ((ret = device_create_file(&interface->dev, &dev_attr_stop)) < 0) {
-    err("Error while file creation. Error number %d", ret);
+    dev_err(&interface->dev, "Error while file creation. Error number %d", ret);
   }
 
   dev_info(&interface->dev, "USB Launcher device now attached\n");
@@ -585,7 +587,7 @@ static int __init launcher_init(void) {
 
   retval = usb_register(&launcher_driver);
   if (retval) {
-    err("usb_register failed. Error number %d", retval);
+    pr_err("usb_register failed. Error number %d", retval);
   }
   pr_alert("USB Missile Launcher drivers loaded");
   pr_alert("idVendor: 0x0416 idProduct: 0x9391\n");
