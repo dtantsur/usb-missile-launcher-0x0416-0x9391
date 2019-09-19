@@ -1,0 +1,7 @@
+.missile_launcher.*.cmd
+.tmp_versions/
+Module.symvers
+missile_launcher.ko
+missile_launcher.mod.*
+missile_launcher.o
+modules.order
